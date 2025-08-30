@@ -15,13 +15,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.KoinApplication
-import org.koin.dsl.module
 import ru.xaori.schedule.navigation.Screen
+import ru.xaori.schedule.screens.ScheduleScreen
 import ru.xaori.schedule.ui.AppTheme
 
 @Composable
 fun App() {
-    KoinApplication({ module { CommonModule } }) {
+    KoinApplication({ modules(CommonModule) }) {
         AppTheme {
             val navController = rememberNavController()
 
@@ -33,10 +33,8 @@ fun App() {
                     ),
                 color = MaterialTheme.colorScheme.background
             ) {
-                NavHost(navController = navController, startDestination = Screen.Schedule) {
-                    composable(Screen.Schedule.route) {
-
-                    }
+                NavHost(navController = navController, startDestination = Screen.Schedule.route) {
+                    composable(Screen.Schedule.route) { ScheduleScreen() }
                     composable(Screen.ChangeClient.route) {
 
                     }
