@@ -53,7 +53,7 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.androidx.activity.compose)
-
+            // Koin
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
         }

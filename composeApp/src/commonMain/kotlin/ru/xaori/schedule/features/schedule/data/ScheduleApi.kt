@@ -6,18 +6,11 @@ import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
-import ru.xaori.schedule.features.schedule.model.ScheduleClientsResponse
 import ru.xaori.schedule.features.schedule.model.ScheduleDataResponse
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
 class ScheduleApi(private val client: HttpClient) {
-    suspend fun getClients(): ScheduleClientsResponse {
-        return client.get("schedule/clients") {
-            contentType(ContentType.Application.Json)
-        }.body()
-    }
-
     @OptIn(ExperimentalTime::class)
     suspend fun getSchedule(clientName: String, clientTime: Instant): ScheduleDataResponse {
         return client.get("schedule") {

@@ -1,9 +1,9 @@
-package ru.xaori.schedule.features.schedule.model
+package ru.xaori.schedule.features.clientChoice.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ScheduleClientsResponse(
+data class ClientChoiceResponse(
     val groups: List<String>,
     val teachers: List<String>
 )
