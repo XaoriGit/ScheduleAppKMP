@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import org.koin.compose.KoinApplication
 import org.koin.compose.viewmodel.koinViewModel
 import ru.xaori.schedule.navigation.Navigation
@@ -30,10 +31,11 @@ fun App() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                Column(
+                Surface(
                     modifier = Modifier.padding(
                         WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical).asPaddingValues()
-                    )
+                    ),
+                    color = Color.Transparent
                 ) {
                     when(uiState) {
                         is AppUiState.Loading -> {}
