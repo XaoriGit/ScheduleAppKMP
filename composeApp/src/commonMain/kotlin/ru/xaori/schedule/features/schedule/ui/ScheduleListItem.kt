@@ -44,7 +44,7 @@ fun ScheduleListItem(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            "Текущее",
+                            "${lesson.number} пара",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )

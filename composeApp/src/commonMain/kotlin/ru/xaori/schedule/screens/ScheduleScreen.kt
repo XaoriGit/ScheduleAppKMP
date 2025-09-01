@@ -3,11 +3,16 @@ package ru.xaori.schedule.screens
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,12 +29,14 @@ import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import ru.xaori.schedule.features.schedule.ScheduleViewModel
+import ru.xaori.schedule.features.schedule.model.AppBarStatus
 import ru.xaori.schedule.features.schedule.model.ScheduleUiState
 import ru.xaori.schedule.features.schedule.ui.LastUpdatedDate
-import ru.xaori.schedule.features.myAppBar.ui.MyAppBar
+import ru.xaori.schedule.features.schedule.ui.AnimatedAppBar
 import ru.xaori.schedule.features.schedule.ui.ScheduleList
 import ru.xaori.schedule.features.schedule.ui.WeekDaysRow
 import schedule.composeapp.generated.resources.Res
+import schedule.composeapp.generated.resources.ic_refresh
 import schedule.composeapp.generated.resources.ic_settings
 
 @Composable
@@ -37,14 +44,20 @@ fun ScheduleScreen(
     goToSettings: () -> Unit,
     viewModel: ScheduleViewModel = koinViewModel()
 ) {
-    val state by viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(16.dp, 8.dp),
     ) {
-        MyAppBar("Расписание", "Тут пока ничего нет") {
+        AnimatedAppBar("Расписание", when(val state = uiState) {
+            is ScheduleUiState.Loading -> AppBarStatus.Loading
+            is ScheduleUiState.Success -> AppBarStatus.SubTitle(
+                "для ${state.scheduleData.clientName}"
+            )
+            is ScheduleUiState.Error -> AppBarStatus.SubTitleError(state.detail)
+        }) {
             IconButton(
                 onClick = goToSettings,
                 modifier = Modifier.size(28.dp),
@@ -58,7 +71,7 @@ fun ScheduleScreen(
             }
         }
 
-        when (val currentState = state) {
+        when (val state = uiState) {
             is ScheduleUiState.Loading -> {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -75,20 +88,63 @@ fun ScheduleScreen(
 
             is ScheduleUiState.Success -> {
                 val pagerState = rememberPagerState(
-                    pageCount = { currentState.scheduleData.schedules.size }
+                    pageCount = { state.scheduleData.schedules.size }
                 )
 
-                WeekDaysRow(pagerState.currentPage, currentState.scheduleData.schedules) { value ->
+                WeekDaysRow(pagerState.currentPage, state.scheduleData.schedules) { value ->
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(value, animationSpec = tween())
                     }
                 }
-                LastUpdatedDate(currentState.scheduleData.lastUpdate)
-                ScheduleList(currentState.scheduleData.schedules, pagerState)
+                LastUpdatedDate(state.scheduleData.lastUpdate)
+                ScheduleList(state.scheduleData.schedules, pagerState)
             }
 
             is ScheduleUiState.Error -> {
-                Text(currentState.detail)
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically)
+                ) {
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            "Что-то пошло не так \uD83D\uDE15",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleMedium
+                        )
+                        Text(
+                            "Проверьте интернет и попробуйте снова",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
+                    Button(
+                        onClick = { viewModel.getSchedule() },
+                        contentPadding = PaddingValues(16.dp, 12.dp),
+                        shape = RoundedCornerShape(12.dp),
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.secondary
+                        )
+                    ) {
+                        Icon(
+                            painterResource(Res.drawable.ic_refresh),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.onSecondary,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(20.dp),
+
+                            )
+                        Text(
+                            "Попробовать снова",
+                            color = MaterialTheme.colorScheme.onSecondary,
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
+                }
             }
         }
     }

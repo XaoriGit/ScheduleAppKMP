@@ -26,8 +26,14 @@ fun ScheduleList(
             contentPadding = PaddingValues(bottom = 12.dp),
             modifier = Modifier.fillMaxHeight()
         ) {
-            items(schedule[page].lessons) { lesson ->
-                ScheduleListItem(lesson)
+            if (schedule[page].lessons.isNotEmpty()) {
+                items(schedule[page].lessons) { lesson ->
+                    ScheduleListItem(lesson)
+                }
+            } else {
+               item {
+                   ScheduleEmptyListItem()
+               }
             }
         }
     }

@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 actual fun createHttpClient(): HttpClient {
     return HttpClient(CIO) {
-        defaultRequest { url("http://10.0.2.2:8000/api/") }
+        defaultRequest { url("https://app.omsktec.ru/api/") }
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true

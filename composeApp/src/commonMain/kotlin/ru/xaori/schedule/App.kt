@@ -1,5 +1,6 @@
 package ru.xaori.schedule
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.asPaddingValues
@@ -10,20 +11,11 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import org.koin.compose.KoinApplication
-import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
-import ru.xaori.schedule.features.clientChoice.data.ClientChoiceStorage
 import ru.xaori.schedule.navigation.Navigation
 import ru.xaori.schedule.navigation.Screen
-import ru.xaori.schedule.screens.ClientChoiceScreen
-import ru.xaori.schedule.screens.ScheduleScreen
-import ru.xaori.schedule.screens.StartScreen
 import ru.xaori.schedule.ui.AppTheme
 import ru.xaori.schedule.model.AppUiState
 
@@ -35,22 +27,25 @@ fun App() {
             val uiState by viewModel.uiState.collectAsState()
 
             Surface(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical).asPaddingValues()
-                    ),
+                modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colorScheme.background
             ) {
-                when(uiState) {
-                    is AppUiState.Loading -> {}
-                    is AppUiState.Success -> {
-                        Navigation(Screen.Schedule.route)
-                    }
-                    is AppUiState.NewUser -> {
-                        Navigation(Screen.Start.route)
+                Column(
+                    modifier = Modifier.padding(
+                        WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical).asPaddingValues()
+                    )
+                ) {
+                    when(uiState) {
+                        is AppUiState.Loading -> {}
+                        is AppUiState.Success -> {
+                            Navigation(Screen.Schedule.route)
+                        }
+                        is AppUiState.NewUser -> {
+                            Navigation(Screen.Start.route)
+                        }
                     }
                 }
+
             }
         }
     }

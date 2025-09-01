@@ -13,7 +13,7 @@ import kotlinx.serialization.json.Json
 
 actual fun createHttpClient(): HttpClient {
     return HttpClient(Js) {
-        defaultRequest { url("http://localhost:8000/api/") }
+        defaultRequest { url("https://app.omsktec.ru/api/") }
         install(ContentNegotiation) {
             json(Json { ignoreUnknownKeys = true; isLenient = true })
         }

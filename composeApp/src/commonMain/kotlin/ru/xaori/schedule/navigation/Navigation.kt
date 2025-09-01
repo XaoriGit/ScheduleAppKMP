@@ -14,7 +14,11 @@ fun Navigation(startDestination: String) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = startDestination) {
         composable(Screen.Start.route) {
-            StartScreen { navController.navigate(Screen.ClientChoice(false)) }
+            StartScreen {
+                navController.navigate(Screen.ClientChoice(false)) {
+                    popUpTo(Screen.Start.route) { inclusive = true }
+                }
+            }
         }
         composable(Screen.Schedule.route) {
             ScheduleScreen({
@@ -28,7 +32,11 @@ fun Navigation(startDestination: String) {
             ClientChoiceScreen(
                 clientChoice.showCancelButton,
                 { navController.popBackStack() },
-                { navController.navigate(Screen.Schedule.route) })
+                {
+                    navController.navigate(Screen.Schedule.route) {
+                        popUpTo(Screen.ClientChoice(false)) { inclusive = true }
+                    }
+                })
         }
     }
 }

@@ -2,6 +2,7 @@ package ru.xaori.schedule.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -34,9 +38,12 @@ import ru.xaori.schedule.features.clientChoice.ClientChoiceViewModel
 import ru.xaori.schedule.features.clientChoice.model.ClientChoiceDataState
 import ru.xaori.schedule.features.clientChoice.model.ClientTypeDestination
 import ru.xaori.schedule.features.clientChoice.ui.ButtonClientChoice
-import ru.xaori.schedule.features.myAppBar.ui.MyAppBar
+import ru.xaori.schedule.features.schedule.model.AppBarStatus
+import ru.xaori.schedule.features.schedule.ui.AnimatedAppBar
 import schedule.composeapp.generated.resources.Res
 import schedule.composeapp.generated.resources.ic_cancel
+import schedule.composeapp.generated.resources.ic_education
+import schedule.composeapp.generated.resources.ic_refresh
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +61,13 @@ fun ClientChoiceScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(16.dp, 8.dp)
     ) {
-        MyAppBar("Расписание", "Выбор расписания") {
+        AnimatedAppBar(
+            "Расписание", when (val state = uiState.dataState) {
+                is ClientChoiceDataState.Loading -> AppBarStatus.Loading
+                is ClientChoiceDataState.Success -> AppBarStatus.SubTitle("Выбор расписания")
+                is ClientChoiceDataState.Error -> AppBarStatus.SubTitleError(state.detail)
+            }
+        ) {
             if (showCancelButton) {
                 IconButton(
                     onClick = goToBack,
@@ -129,17 +142,28 @@ fun ClientChoiceScreen(
             is ClientChoiceDataState.Success -> {
                 LazyColumn {
                     if (uiState.selectedTabIndex == ClientTypeDestination.Group.ordinal) {
-                        itemsIndexed(state.clientChoice.groups.filter {
+                        val items = state.clientChoice.groups.filter {
                             it.contains(uiState.searchQuery, ignoreCase = true)
-                        }) { index, group ->
-
-                            ButtonClientChoice(group) {
-                                viewModel.onClickClientChoice(
-                                    it,
-                                    goToMain
+                        }
+                        if (items.isNotEmpty()) {
+                            itemsIndexed(items) { index, group ->
+                                ButtonClientChoice(group) {
+                                    viewModel.onClickClientChoice(
+                                        it,
+                                        goToMain
+                                    )
+                                }
+                            }
+                        } else {
+                            item {
+                                Text(
+                                    "Ничего не найдено \uD83D\uDE1E",
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    color = MaterialTheme.colorScheme.onSurface
                                 )
                             }
                         }
+
                     } else {
                         itemsIndexed(state.clientChoice.teachers.filter {
                             it.contains(uiState.searchQuery, ignoreCase = true)
@@ -156,7 +180,30 @@ fun ClientChoiceScreen(
             }
 
             is ClientChoiceDataState.Error -> {
-                Text(state.detail)
+                Button(
+                    onClick = { viewModel.getClients() },
+                    contentPadding = PaddingValues(16.dp, 12.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.secondary
+                    )
+                ) {
+                    Icon(
+                        painterResource(Res.drawable.ic_refresh),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSecondary,
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(20.dp),
+
+                    )
+                    Text(
+                        "Попробовать снова",
+                        color = MaterialTheme.colorScheme.onSecondary,
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
             }
         }
 
