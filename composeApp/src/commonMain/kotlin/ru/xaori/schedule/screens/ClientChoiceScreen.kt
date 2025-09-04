@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -42,7 +41,6 @@ import ru.xaori.schedule.features.schedule.model.AppBarStatus
 import ru.xaori.schedule.features.schedule.ui.AnimatedAppBar
 import schedule.composeapp.generated.resources.Res
 import schedule.composeapp.generated.resources.ic_cancel
-import schedule.composeapp.generated.resources.ic_education
 import schedule.composeapp.generated.resources.ic_refresh
 
 
