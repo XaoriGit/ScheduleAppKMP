@@ -24,8 +24,13 @@ jobs:
           echo "${{ secrets.SSH_KEY }}" > deploy_key.pem
           chmod 600 deploy_key.pem
           
+      - name: Чистим dist на сервере
+        run: |
+          ssh -i deploy_key.pem -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no \
+            ${{ secrets.USER }}@${{ secrets.HOST }} "rm -rf /srv/schedule/web/dist/*"
+
       - name: Копируем билд на сервер
         run: |
-          rsync -avz --delete -e "ssh -i deploy_key.pem -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
+          rsync -avz -e "ssh -i deploy_key.pem -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=no" \
             build/dist/wasmJs/productionExecutable/ \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/srv/schedule/web/dist/
