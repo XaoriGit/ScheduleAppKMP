@@ -26,6 +26,6 @@ jobs:
           
       - name: Копируем билд на сервер
         run: |
-          rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT }}" \
+          rsync -avz --delete -e "ssh -i deploy_key.pem -p ${{ secrets.SSH_PORT }}" \
             build/dist/wasmJs/productionExecutable/ \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/srv/schedule/web/dist/
