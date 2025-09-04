@@ -12,6 +12,9 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: composeApp
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,5 +27,5 @@ jobs:
       - name: Копируем билд на сервер
         run: |
           rsync -avz --delete -e "ssh -p ${{ secrets.SSH_PORT }}" \
-            ScheduleAppKMP/composeApp/build/dist/wasmJs/productionExecutable/ \
+            build/dist/wasmJs/productionExecutable/ \
             ${{ secrets.USER }}@${{ secrets.HOST }}:/srv/schedule/web/dist/
