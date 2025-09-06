@@ -31,9 +31,9 @@ fun ScheduleList(
                     ScheduleListItem(lesson)
                 }
             } else {
-               item {
-                   ScheduleEmptyListItem()
-               }
+                item {
+                    ScheduleEmptyListItem()
+                }
             }
         }
     }
