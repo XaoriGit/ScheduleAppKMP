@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.painterResource
-import ru.xaori.schedule.common.Emoji
 import schedule.composeapp.generated.resources.Res
 import schedule.composeapp.generated.resources.ic_education
 
@@ -37,7 +36,7 @@ fun StartScreen(goToClientChoice: () -> Unit) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Добро пожаловать! ${Emoji.Hello.unicode}",
+                "Добро пожаловать!",
                 color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.titleMedium
             )

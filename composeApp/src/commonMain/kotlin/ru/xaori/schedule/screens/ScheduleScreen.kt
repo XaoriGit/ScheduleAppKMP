@@ -146,7 +146,7 @@ fun ScheduleScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         Text(
-                            "Что-то пошло не так \uD83D\uDE15",
+                            "Что-то пошло не так",
                             color = MaterialTheme.colorScheme.onSurface,
                             style = MaterialTheme.typography.titleMedium
                         )

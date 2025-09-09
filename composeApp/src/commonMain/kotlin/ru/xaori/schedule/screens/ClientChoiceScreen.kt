@@ -155,7 +155,7 @@ fun ClientChoiceScreen(
                         } else {
                             item {
                                 Text(
-                                    "Ничего не найдено \uD83D\uDE1E",
+                                    "Ничего не найдено",
                                     style = MaterialTheme.typography.bodyMedium,
                                     color = MaterialTheme.colorScheme.onSurface
                                 )
