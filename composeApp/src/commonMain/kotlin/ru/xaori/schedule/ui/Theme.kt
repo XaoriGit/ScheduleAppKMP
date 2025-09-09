@@ -1,14 +1,9 @@
 package ru.xaori.schedule.ui
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Typography
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.text.font.FontFamily
-import org.jetbrains.compose.resources.Font
-import schedule.composeapp.generated.resources.Res
-import schedule.composeapp.generated.resources.roboto_var
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -91,34 +86,9 @@ fun AppTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-    val roboto = FontFamily(
-        Font(Res.font.roboto_var)
-    )
-
-    val typography = Typography().run {
-        Typography(
-            displayLarge = displayLarge.copy(fontFamily = roboto),
-            displayMedium = displayMedium.copy(fontFamily = roboto),
-            displaySmall = displaySmall.copy(fontFamily = roboto),
-            headlineLarge = headlineLarge.copy(fontFamily = roboto),
-            headlineMedium = headlineMedium.copy(fontFamily = roboto),
-            headlineSmall = headlineSmall.copy(fontFamily = roboto),
-            titleLarge = titleLarge.copy(fontFamily = roboto),
-            titleMedium = titleMedium.copy(fontFamily = roboto),
-            titleSmall = titleSmall.copy(fontFamily = roboto),
-            bodyLarge = bodyLarge.copy(fontFamily = roboto),
-            bodyMedium = bodyMedium.copy(fontFamily = roboto),
-            bodySmall = bodySmall.copy(fontFamily = roboto),
-            labelLarge = labelLarge.copy(fontFamily = roboto),
-            labelMedium = labelMedium.copy(fontFamily = roboto),
-            labelSmall = labelSmall.copy(fontFamily = roboto)
-        )
-    }
-
     MaterialTheme(
         colorScheme = if (useDarkTheme) darkScheme else lightScheme,
         shapes = MaterialTheme.shapes,
-        typography = typography,
         content = content
     )
 }

@@ -19,4 +19,3 @@ captures
 
 !composeApp/build/dist/wasmJs/productionExecutable/
 !composeApp/build/dist/wasmJs/productionExecutable/**
-!composeApp/build/dist/wasmJs/productionExecutable/composeResources/schedule.composeapp.generated.resources/font/**
