@@ -112,7 +112,8 @@ fun ClientChoiceScreen(
             },
             singleLine = true,
             shape = RoundedCornerShape(12.dp),
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
@@ -120,7 +121,8 @@ fun ClientChoiceScreen(
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                 unfocusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 focusedLabelColor = MaterialTheme.colorScheme.primary
-            )
+            ),
+
         )
         when (val state = uiState.dataState) {
             is ClientChoiceDataState.Loading -> {
