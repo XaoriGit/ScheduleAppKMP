@@ -4,17 +4,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import ru.xaori.schedule.common.RelativeTimeFormatter
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Composable
 fun LastUpdatedDate(updatedDate: String) {
     Row {
         Text(
-            "По состоянию на ",
+            "Обновлено ",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
-            updatedDate,
+            RelativeTimeFormatter.format(Instant.parse(updatedDate)),
             style = MaterialTheme.typography.labelLarge,
             color = MaterialTheme.colorScheme.primary
         )

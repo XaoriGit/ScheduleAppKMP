@@ -31,7 +31,9 @@ fun Navigation(startDestination: String) {
             val clientChoice: Screen.ClientChoice = backStackEntry.toRoute()
             ClientChoiceScreen(
                 clientChoice.showCancelButton,
-                { navController.popBackStack() },
+                {
+                    navController.popBackStack()
+                },
                 {
                     navController.navigate(Screen.Schedule.route) {
                         popUpTo(Screen.ClientChoice(false)) { inclusive = true }

@@ -140,18 +140,36 @@ fun ClientChoiceScreen(
             }
 
             is ClientChoiceDataState.Success -> {
+                val query = uiState.searchQuery.trim()
                 LazyColumn {
-                    if (uiState.selectedTabIndex == ClientTypeDestination.Group.ordinal) {
-                        val items = state.clientChoice.groups.filter {
-                            it.contains(uiState.searchQuery, ignoreCase = true)
-                        }
-                        if (items.isNotEmpty()) {
-                            itemsIndexed(items) { index, group ->
+                    if (query.isEmpty()) {
+                        if (uiState.selectedTabIndex == ClientTypeDestination.Group.ordinal) {
+                            itemsIndexed(state.clientChoice.groups) { _, group ->
                                 ButtonClientChoice(group) {
-                                    viewModel.onClickClientChoice(
-                                        it,
-                                        goToMain
-                                    )
+                                    viewModel.onClickClientChoice(it, goToMain)
+                                }
+                            }
+                        } else {
+                            itemsIndexed(state.clientChoice.teachers) { _, teacher ->
+                                ButtonClientChoice(teacher) {
+                                    viewModel.onClickClientChoice(it, goToMain)
+                                }
+                            }
+                        }
+                    } else {
+                        val groups = state.clientChoice.groups.filter {
+                            it.contains(query, ignoreCase = true)
+                        }
+                        val teachers = state.clientChoice.teachers.filter {
+                            it.contains(query, ignoreCase = true)
+                        }
+
+                        val results = groups + teachers
+
+                        if (results.isNotEmpty()) {
+                            itemsIndexed(results) { _, item ->
+                                ButtonClientChoice(item) {
+                                    viewModel.onClickClientChoice(it, goToMain)
                                 }
                             }
                         } else {
@@ -163,21 +181,10 @@ fun ClientChoiceScreen(
                                 )
                             }
                         }
-
-                    } else {
-                        itemsIndexed(state.clientChoice.teachers.filter {
-                            it.contains(uiState.searchQuery, ignoreCase = true)
-                        }) { index, teacher ->
-                            ButtonClientChoice(teacher) {
-                                viewModel.onClickClientChoice(
-                                    it,
-                                    goToMain
-                                )
-                            }
-                        }
                     }
                 }
             }
+
 
             is ClientChoiceDataState.Error -> {
                 Button(
