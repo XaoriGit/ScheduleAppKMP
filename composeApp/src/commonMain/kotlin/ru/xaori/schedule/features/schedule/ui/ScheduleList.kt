@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.xaori.schedule.features.schedule.model.ScheduleDay
@@ -15,6 +16,7 @@ import ru.xaori.schedule.features.schedule.model.ScheduleDay
 @Composable
 fun ScheduleList(
     schedule: List<ScheduleDay>,
+    lastUpdate: String,
     pageState: PagerState,
 ) {
     HorizontalPager(
@@ -22,6 +24,7 @@ fun ScheduleList(
         pageSpacing = 16.dp,
     ) { page ->
         LazyColumn(
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(12.dp),
             contentPadding = PaddingValues(bottom = 12.dp),
             modifier = Modifier.fillMaxHeight()
@@ -34,6 +37,9 @@ fun ScheduleList(
                 item {
                     ScheduleEmptyListItem()
                 }
+            }
+            item {
+                LastUpdatedDate(lastUpdate)
             }
         }
     }

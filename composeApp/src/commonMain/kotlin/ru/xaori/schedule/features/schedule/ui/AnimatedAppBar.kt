@@ -3,6 +3,7 @@ package ru.xaori.schedule.features.schedule.ui
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
@@ -21,6 +22,7 @@ import ru.xaori.schedule.features.schedule.model.AppBarStatus
 fun AnimatedAppBar(
     title: String,
     status: AppBarStatus,
+    goToSettings: () -> Unit = {},
     leftContent: @Composable (RowScope.() -> Unit) = {}
 ) {
     val color by animateColorAsState(
@@ -57,7 +59,10 @@ fun AnimatedAppBar(
                         Text(
                             currentStatus.subTitle,
                             style = MaterialTheme.typography.labelLarge,
-                            color = color
+                            color = color,
+                            modifier = Modifier.clickable(
+                                onClick = goToSettings
+                            )
                         )
                     }
                     is AppBarStatus.SubTitleError -> {

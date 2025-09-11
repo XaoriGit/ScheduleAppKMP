@@ -69,13 +69,16 @@ fun ScheduleScreen(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         modifier = Modifier.padding(16.dp, 8.dp),
     ) {
-        AnimatedAppBar("Расписание", when(val state = uiState) {
-            is ScheduleUiState.Loading -> AppBarStatus.Loading
-            is ScheduleUiState.Success -> AppBarStatus.SubTitle(
-                "для ${state.scheduleData.clientName}"
-            )
-            is ScheduleUiState.Error -> AppBarStatus.SubTitleError(state.detail)
-        }) {
+        AnimatedAppBar(
+            "Расписание", when (val state = uiState) {
+                is ScheduleUiState.Loading -> AppBarStatus.Loading
+                is ScheduleUiState.Success -> AppBarStatus.SubTitle(
+                    "для ${state.scheduleData.clientName}"
+                )
+                is ScheduleUiState.Error -> AppBarStatus.SubTitleError(state.detail)
+            },
+            goToSettings
+        ) {
             IconButton(
                 onClick = goToSettings,
                 modifier = Modifier.size(28.dp),
@@ -114,7 +117,6 @@ fun ScheduleScreen(
                         pagerState.animateScrollToPage(value, animationSpec = tween())
                     }
                 }
-                LastUpdatedDate(state.scheduleData.lastUpdate)
                 PullToRefreshBox(
                     state = stateRefresh,
                     isRefreshing = isRefreshing,
@@ -132,7 +134,11 @@ fun ScheduleScreen(
                         )
                     },
                 ) {
-                    ScheduleList(state.scheduleData.schedules, pagerState)
+                    ScheduleList(
+                        state.scheduleData.schedules,
+                        state.scheduleData.lastUpdate,
+                        pagerState
+                    )
                 }
             }
 
