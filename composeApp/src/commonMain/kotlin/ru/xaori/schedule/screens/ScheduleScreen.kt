@@ -39,7 +39,6 @@ import org.koin.compose.viewmodel.koinViewModel
 import ru.xaori.schedule.features.schedule.ScheduleViewModel
 import ru.xaori.schedule.features.schedule.model.AppBarStatus
 import ru.xaori.schedule.features.schedule.model.ScheduleUiState
-import ru.xaori.schedule.features.schedule.ui.LastUpdatedDate
 import ru.xaori.schedule.features.schedule.ui.AnimatedAppBar
 import ru.xaori.schedule.features.schedule.ui.ScheduleList
 import ru.xaori.schedule.features.schedule.ui.WeekDaysRow
@@ -67,7 +66,8 @@ fun ScheduleScreen(
 
     Column(
         verticalArrangement = Arrangement.spacedBy(16.dp),
-        modifier = Modifier.padding(16.dp, 8.dp),
+        modifier = Modifier
+            .padding(16.dp, 8.dp),
     ) {
         AnimatedAppBar(
             "Расписание", when (val state = uiState) {

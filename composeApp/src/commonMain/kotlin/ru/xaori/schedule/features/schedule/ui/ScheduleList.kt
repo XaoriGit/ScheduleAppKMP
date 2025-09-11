@@ -23,26 +23,22 @@ fun ScheduleList(
         state = pageState,
         pageSpacing = 16.dp,
     ) { page ->
-        LazyColumn(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
-            contentPadding = PaddingValues(bottom = 12.dp),
-            modifier = Modifier.fillMaxHeight()
-        ) {
-            if (schedule[page].lessons.isNotEmpty()) {
+        if (schedule[page].lessons.isNotEmpty()) {
+            LazyColumn(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                contentPadding = PaddingValues(bottom = 12.dp),
+                modifier = Modifier.fillMaxHeight()
+            ) {
                 items(schedule[page].lessons) { lesson ->
                     ScheduleListItem(lesson)
                 }
-            } else {
                 item {
-                    ScheduleEmptyListItem()
+                    LastUpdatedDate(lastUpdate)
                 }
             }
-            item {
-                LastUpdatedDate(lastUpdate)
-            }
+        } else {
+            ScheduleEmptyListItem()
         }
     }
-
-
 }

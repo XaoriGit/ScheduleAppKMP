@@ -26,6 +26,9 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -53,6 +56,7 @@ fun ClientChoiceScreen(
     viewModel: ClientChoiceViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    var isNavigate by remember { mutableStateOf(false) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -68,7 +72,12 @@ fun ClientChoiceScreen(
         ) {
             if (showCancelButton) {
                 IconButton(
-                    onClick = goToBack,
+                    onClick = {
+                        if (!isNavigate) {
+                            goToBack()
+                            isNavigate = true
+                        }
+                    },
                     modifier = Modifier.size(28.dp),
                 ) {
                     Icon(
@@ -123,7 +132,7 @@ fun ClientChoiceScreen(
                 focusedLabelColor = MaterialTheme.colorScheme.primary
             ),
 
-        )
+            )
         when (val state = uiState.dataState) {
             is ClientChoiceDataState.Loading -> {
                 Column(
@@ -204,7 +213,7 @@ fun ClientChoiceScreen(
                             .padding(end = 8.dp)
                             .size(20.dp),
 
-                    )
+                        )
                     Text(
                         "Попробовать снова",
                         color = MaterialTheme.colorScheme.onSecondary,

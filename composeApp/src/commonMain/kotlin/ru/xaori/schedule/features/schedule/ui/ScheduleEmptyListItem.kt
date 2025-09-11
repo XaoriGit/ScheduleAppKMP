@@ -2,49 +2,37 @@ package ru.xaori.schedule.features.schedule.ui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 
 @Composable
 fun ScheduleEmptyListItem() {
-    Card(
-        colors = CardDefaults.cardColors(
-            MaterialTheme.colorScheme.surfaceVariant
-        ), shape = RoundedCornerShape(12.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp, 12.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            "(>_<)",
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.secondary,
+        )
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp, 12.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                "Расписания пока нет",
+                "На сегодня расписания нет",
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.secondary,
             )
-            Card(
-                colors = CardDefaults.cardColors(
-                    MaterialTheme.colorScheme.primary
-                ),
-                shape = RoundedCornerShape(8.dp)
-            ) {
-                Text(
-                    "Скоро добавим",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(10.dp, 6.dp)
-                )
-            }
         }
     }
 }
