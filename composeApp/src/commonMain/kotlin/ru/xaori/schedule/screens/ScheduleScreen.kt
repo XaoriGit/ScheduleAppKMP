@@ -38,6 +38,7 @@ import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
 import ru.xaori.schedule.features.schedule.ScheduleViewModel
 import ru.xaori.schedule.features.schedule.model.AppBarStatus
+import ru.xaori.schedule.features.schedule.model.ScheduleEvents
 import ru.xaori.schedule.features.schedule.model.ScheduleUiState
 import ru.xaori.schedule.features.schedule.ui.AnimatedAppBar
 import ru.xaori.schedule.features.schedule.ui.ScheduleList
@@ -50,6 +51,7 @@ import schedule.composeapp.generated.resources.ic_settings
 @Composable
 fun ScheduleScreen(
     goToSettings: () -> Unit,
+    goToStart: () -> Unit,
     viewModel: ScheduleViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -61,6 +63,13 @@ fun ScheduleScreen(
     LaunchedEffect(uiState) {
         if (uiState !is ScheduleUiState.Loading && isRefreshing) {
             isRefreshing = false
+        }
+    }
+    LaunchedEffect(Unit) {
+        viewModel.events.collect { events ->
+            when (events) {
+                ScheduleEvents.GoToStart -> goToStart()
+            }
         }
     }
 

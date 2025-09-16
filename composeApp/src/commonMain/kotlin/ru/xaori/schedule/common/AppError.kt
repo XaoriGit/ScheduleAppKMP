@@ -4,6 +4,7 @@ package ru.xaori.schedule.common
 sealed class AppError {
     object NoInternet : AppError()
     data class HttpError(val code: Int, val message: String?) : AppError()
+    object NotFound : AppError()
     data class Unknown(val throwable: Throwable) : AppError()
 }
 

@@ -11,6 +11,8 @@ import ru.xaori.schedule.common.ResultWrapper
 import ru.xaori.schedule.features.clientChoice.data.ClientChoiceRepository
 import ru.xaori.schedule.features.clientChoice.model.ClientChoiceDataState
 import ru.xaori.schedule.features.clientChoice.model.ClientChoiceUiState
+import ru.xaori.schedule.features.schedule.model.ScheduleEvents
+import ru.xaori.schedule.features.schedule.model.ScheduleUiState
 
 class ClientChoiceViewModel(private val clientChoiceRepository: ClientChoiceRepository) :
     ViewModel() {
@@ -33,18 +35,24 @@ class ClientChoiceViewModel(private val clientChoiceRepository: ClientChoiceRepo
                     }
                 }
 
+
                 is ResultWrapper.Error -> {
-                    val error = result.error
-                    _uiState.update {
-                        it.copy(
-                            dataState = ClientChoiceDataState.Error(
-                                when (error) {
-                                    is AppError.NoInternet -> "Ошибка соединения"
-                                    is AppError.HttpError -> "Ошибка сервера (${error.code})"
-                                    is AppError.Unknown -> "Неизвестная ошибка: ${error.throwable.message}"
-                                }
-                            )
-                        )
+                    when (val error = result.error) {
+                        is AppError.NotFound -> {
+
+                        }
+
+                        is AppError.NoInternet -> {
+                            _uiState.update { it.copy(dataState = ClientChoiceDataState.Error("Ошибка соединения")) }
+                        }
+
+                        is AppError.HttpError -> {
+                            _uiState.update { it.copy(dataState = ClientChoiceDataState.Error("Ошибка сервера ${error.code}")) }
+                        }
+
+                        is AppError.Unknown -> {
+                            _uiState.update { it.copy(dataState = ClientChoiceDataState.Error("Неизвестная ошибка: ${error.throwable.message}")) }
+                        }
                     }
                 }
             }

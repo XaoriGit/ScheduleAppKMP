@@ -21,24 +21,25 @@ fun Navigation(startDestination: String) {
             }
         }
         composable(Screen.Schedule.route) {
-            ScheduleScreen({
-                navController.navigate(
-                    Screen.ClientChoice(true)
-                )
-            })
+            ScheduleScreen(
+                goToSettings = {
+                    navController.navigate(Screen.ClientChoice(true))
+                },
+                goToStart = {
+                    navController.navigate(Screen.Start.route) {
+                        popUpTo(Screen.Schedule.route) { inclusive = true }
+                    }
+                })
         }
         composable<Screen.ClientChoice> { backStackEntry ->
             val clientChoice: Screen.ClientChoice = backStackEntry.toRoute()
-            ClientChoiceScreen(
-                clientChoice.showCancelButton,
-                {
-                    navController.popBackStack()
-                },
-                {
-                    navController.navigate(Screen.Schedule.route) {
-                        popUpTo(Screen.ClientChoice(false)) { inclusive = true }
-                    }
-                })
+            ClientChoiceScreen(clientChoice.showCancelButton, {
+                navController.popBackStack()
+            }, {
+                navController.navigate(Screen.Schedule.route) {
+                    popUpTo(Screen.ClientChoice(false)) { inclusive = true }
+                }
+            })
         }
     }
 }
