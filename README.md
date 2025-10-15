@@ -3,6 +3,8 @@
 
 Приложение расписание колледжа на **Compose Multiplatform**
 
+[Rustore](https://www.rustore.ru/catalog/app/ru.xaori.schedule)
+
 ## 🔧 Запуск проекта
 
 ### 📱 Android
